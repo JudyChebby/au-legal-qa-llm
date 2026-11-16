@@ -1,0 +1,17 @@
+datasets
+transformers
+accelerate
+torch
+peft
+trl
+bitsandbytes
+sentence-transformers
+chromadb
+rank-bm25
+evaluate
+rouge-score
+bert-score
+scikit-learn
+pandas
+matplotlib
+tqdm
