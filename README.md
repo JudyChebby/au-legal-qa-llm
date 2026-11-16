@@ -2,39 +2,30 @@
 
 CP5403 Assessment 2 (LLM Project), James Cook University.
 
-This project compares three ways of answering Australian legal questions with a small open-weights LLM:
+This project compares four approaches to answering Australian legal questions using a small open-weights LLM (`Qwen/Qwen2.5-1.5B-Instruct`):
 
-1. **Closed-book:** the base model answers from its own knowledge.
-2. **RAG:** retrieve relevant passages from Australian legal documents, then answer.
-3. **LoRA/QLoRA fine-tuning:** fine-tune the model on legal question-answer pairs.
+1. **Closed-book baseline (`src/baseline.py`):** The base model answers directly from parametric knowledge without external context.
+2. **Dense RAG (`src/rag_pipeline.py`):** Chunks source legal documents, embeds them with `BAAI/bge-small-en-v1.5` in ChromaDB, retrieves the top-$k$ passages, and generates grounded answers.
+3. **LoRA/QLoRA fine-tuning (`src/finetune.py`):** Parameter-efficient 4-bit QLoRA fine-tuning on training question-answer pairs.
+4. **Hybrid + Cross-Encoder Reranking RAG (`src/hybrid_rerank_rag.py`):** Literature-based enhancement combining sparse BM25 keyword retrieval, dense vector search, and `ms-marco-MiniLM-L-6-v2` cross-encoder reranking.
 
 Dataset: [Open Australian Legal QA](https://huggingface.co/datasets/umarbutler/open-australian-legal-qa) (Butler, 2023).
 
-> This system is a university research project. It does not provide legal advice.
+> **Disclaimer:** This system is an academic research prototype and does not constitute legal advice.
 
-## Repository structure
+## Repository Structure
 
-- `notebooks/` - Colab notebooks, in order of use
-- `docs/prompt_history/` - log of every GenAI prompt used (required for submission)
-- `requirements.txt` - Python libraries needed
+- `src/data_prep.py` — Loads the dataset and creates reproducible train/validation/test splits.
+- `src/baseline.py` — Runs closed-book zero-shot inference and logs latency.
+- `src/rag_pipeline.py` — Builds the ChromaDB vector index and runs dense RAG inference + Recall@k tracking.
+- `src/finetune.py` — Fine-tunes `Qwen2.5-1.5B-Instruct` with 4-bit QLoRA and evaluates on the test split.
+- `src/hybrid_rerank_rag.py` — Implements hybrid BM25 + dense retrieval with cross-encoder reranking.
+- `src/evaluate.py` — Computes unified Token F1, ROUGE-L, Recall@k, and latency metrics across all setups.
+- `docs/prompt_history/` — Running log of GenAI prompts used during development.
+- `requirements.txt` — Python dependencies.
 
-## Setup (Google Colab)
+## Setup & Execution Order
 
-1. Open a new notebook at colab.research.google.com and set the runtime to a T4 GPU.
-2. Clone this repo and run `pip install -r requirements.txt`.
-
-## Status
-
-- [x] Step 1: repo and environment
-- [ ] Step 2: data loading, exploration and document-level split
-- [ ] Step 3: closed-book baseline
-- [ ] Step 4: RAG
-- [ ] Step 5: LoRA fine-tuning
-- [ ] Step 6: literature-based improvement
-- [ ] Step 7: evaluation
-- [ ] Step 8: report
-- [ ] Step 9: presentation
-
-## Generative AI use
-
-GenAI tools were used to assist this project. Prompts are logged in `docs/prompt_history/`.
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
