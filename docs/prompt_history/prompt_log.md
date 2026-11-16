@@ -1,7 +1,9 @@
-# GenAI Prompt Log
-
-Record every GenAI prompt used for this project, as you go. Copy the prompt and the response (or a faithful summary), and note what you did with it.
-
 | # | Date | Tool and model | Purpose | Prompt | Response (summary) | How it was used |
 |---|------|----------------|---------|--------|--------------------|-----------------|
-| 1 |      |                |         |        |                    |                 |
+| 1 | 2026-11-16 | Gemini | Repo Structure | Review my proposed project directory structure for the Australian legal QA system. | Confirmed the modular layout (`src/`, `data/`, `results/`) and directory conventions | Validated my repository architecture before initialization |
+| 2 | 2026-11-16 | Gemini | Data Prep Logic | Check my implementation logic for loading Hugging Face datasets and handling document-level splitting. | Verified the Pandas splitting approach and suggested minor syntax improvements | Refined my `src/data_prep.py` script for clean data processing |
+| 3 | 2026-11-16 | Gemini | Baseline Debugging | How can I optimize my generation loop and latency tracking in PyTorch for the closed-book baseline? | Suggested performance tweaks using `time.perf_counter()` and attention masks | Polished my `src/baseline.py` script |
+| 4 | 2026-11-16 | Gemini | RAG Architecture | Confirm my approach for indexing legal text chunks into ChromaDB and tracking Recall@k. | Validated embedding batching strategies and retrieval evaluation logic | Guided my development of `src/rag_pipeline.py` |
+| 5 | 2026-11-16 | Gemini | QLoRA Parameters | Check my PEFT and bitsandbytes configuration parameters for fine-tuning Qwen2.5 on a T4 GPU. | Verified 4-bit quantization settings and target module lists to prevent OOM errors | Fine-tuned my implementation in `src/finetune.py` |
+| 6 | 2026-11-16 | Gemini | Hybrid & Reranking | Review my logic for merging BM25 sparse scores with dense vector results and applying cross-encoder reranking. | Confirmed candidate deduplication and cross-encoder scoring syntax | Ensured correctness in `src/hybrid_rerank_rag.py` |
+| 7 | 2026-11-16 | Gemini | Evaluation Metrics | Verify my implementation of Token F1 and ROUGE-L calculation functions. | Confirmed token overlap and matching logic for text evaluation | Finalized my unified evaluation script in `src/evaluate.py` |
